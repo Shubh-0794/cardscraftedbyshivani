@@ -1,0 +1,6 @@
+{
+  "name": "Cards Crafted",
+  "description": "Full-stack customer order management, craft custom order tracking, RBAC, inventory recipe calculation, Google Drive cloud storage integration, and payment tracking system.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

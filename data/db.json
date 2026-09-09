@@ -1,0 +1,50 @@
+{
+  "users": [
+    {
+      "id": "usr-1",
+      "name": "Super Admin",
+      "email": "admin@example.com",
+      "whatsapp": "919820112345",
+      "role": "SUPER_ADMIN",
+      "status": "ACTIVE",
+      "createdAt": "2026-08-16T13:40:00.000Z",
+      "lastLogin": "2026-08-16T13:40:00.000Z"
+    }
+  ],
+  "customers": [],
+  "products": [],
+  "inventory": [],
+  "orders": [],
+  "payments": [],
+  "statusHistory": [],
+  "inventoryMovements": [],
+  "notifications": [],
+  "auditLogs": [],
+  "settings": {
+    "companyName": "Cards Crafted",
+    "businessName": "Cards Crafted",
+    "logoUrl": "/src/assets/images/cards_crafted_logo_1786446210358.jpg",
+    "address": "102 Creative Craft Lane, Handloom Market",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "pincode": "400012",
+    "phone": "+91 98201 12345",
+    "whatsapp": "919820112345",
+    "email": "contact@craftflowstudio.com",
+    "website": "www.craftflowstudio.com",
+    "gstin": "27AABCC1234D1ZP",
+    "orderPrefix": "CC-2026-",
+    "lowStockAlertThreshold": 10,
+    "defaultTaxPercent": 12,
+    "whatsappOrderConfirmedMsg": "Hello {{customerName}}, your craft order #{{orderNumber}} for {{itemCount}} item(s) has been confirmed! Expected completion: {{deliveryDate}}.",
+    "whatsappOrderReadyMsg": "Hello {{customerName}}, great news! Your craft order #{{orderNumber}} is READY for pickup / delivery!",
+    "whatsappPaymentDueMsg": "Hello {{customerName}}, a friendly reminder regarding order #{{orderNumber}}. Outstanding balance is ₹{{balance}}."
+  },
+  "counters": {
+    "customerSeq": 0,
+    "orderSeq": 0,
+    "productSeq": 0,
+    "inventorySeq": 0,
+    "paymentSeq": 0
+  }
+}

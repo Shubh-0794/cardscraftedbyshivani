@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+/* Elegant Cursive Brand Typography */
+.font-cursive {
+  font-family: 'Dancing Script', 'Great Vibes', cursive, 'Brush Script MT', 'Caveat', cursive, serif;
+}
+
+@layer base {
+  html.dark body {
+    background-color: #060913;
+    color: #f1f5f9;
+  }
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+/* Rich Craft Studio Light Workspace Pattern */
+.bg-craft-studio {
+  background-color: #060913;
+  background-image: 
+    radial-gradient(at 15% 15%, rgba(59, 130, 246, 0.22) 0px, transparent 45%),
+    radial-gradient(at 85% 85%, rgba(139, 92, 246, 0.18) 0px, transparent 45%),
+    linear-gradient(to right, rgba(59, 130, 246, 0.16) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(59, 130, 246, 0.16) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 28px 28px, 28px 28px;
+}
+
+/* Futuristic Blueprint / Tech Box-Box Grid Background matching reference image */
+.bg-blueprint-grid {
+  background-color: #050812;
+  background-image: 
+    radial-gradient(at 15% 15%, rgba(59, 130, 246, 0.22) 0px, transparent 45%),
+    radial-gradient(at 85% 85%, rgba(139, 92, 246, 0.18) 0px, transparent 45%),
+    linear-gradient(to right, rgba(59, 130, 246, 0.18) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(59, 130, 246, 0.18) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 28px 28px, 28px 28px;
+}
+
+.bg-blueprint-grid-light {
+  background-color: #0b1120;
+  background-image: 
+    linear-gradient(to right, rgba(59, 130, 246, 0.14) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(59, 130, 246, 0.14) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.bg-studio-canvas {
+  background-image: 
+    linear-gradient(to right, rgba(59, 130, 246, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(59, 130, 246, 0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* Custom Horizontal Scrollbar for Tab Navigation */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@media print {
+  @page {
+    margin: 12mm 15mm;
+    size: auto;
+  }
+
+  body {
+    background-color: white !important;
+    background-image: none !important;
+    color: #0f172a !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide navigation, action bars, modals backdrop and non-printable elements */
+  nav, header, aside, button, .print\:hidden {
+    display: none !important;
+  }
+
+  /* Expand printable container seamlessly */
+  #printable-receipt,
+  #printable-invoice {
+    display: block !important;
+    position: static !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: white !important;
+    color: #0f172a !important;
+  }
+}

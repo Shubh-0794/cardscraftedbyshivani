@@ -544,6 +544,53 @@ export const api = {
       message: string;
     }>('/auth/github/disconnect', {
       method: 'POST'
-    })
+    }),
+
+  // Supabase Cloud Database Integration
+  getSupabaseStatus: () =>
+    fetchApi<{
+      projectId: string;
+      url: string;
+      configured: boolean;
+      maskedKey: string;
+    }>('/supabase/status'),
+
+  testSupabaseConnection: () =>
+    fetchApi<{
+      success: boolean;
+      latencyMs: number;
+      message: string;
+      projectId: string;
+      url: string;
+    }>('/supabase/test'),
+
+  syncAllToSupabase: () =>
+    fetchApi<{
+      success: boolean;
+      message: string;
+      syncedCount: number;
+      details: { [key: string]: number };
+      error?: string;
+    }>('/supabase/sync', {
+      method: 'POST'
+    }),
+
+  restoreAllFromSupabase: () =>
+    fetchApi<{
+      success: boolean;
+      message: string;
+      importedCount: number;
+      details: { [key: string]: number };
+      error?: string;
+    }>('/supabase/restore', {
+      method: 'POST'
+    }),
+
+  getSupabaseSqlSchema: () =>
+    fetchApi<{
+      sql: string;
+      projectId: string;
+    }>('/supabase/sql-schema')
 };
+
 

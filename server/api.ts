@@ -2,6 +2,13 @@ import { Router, Response } from 'express';
 import { db } from './db';
 import { authenticateToken, requireRoles, AuthenticatedRequest, generateToken, hashPassword, verifyPassword } from './auth';
 import { UserRole, OrderStatus, User } from '../src/types';
+import {
+  getSupabaseConfig,
+  testSupabaseConnection,
+  syncAllToSupabase,
+  restoreAllFromSupabase,
+  getSupabaseSqlSchema
+} from './supabase';
 
 export const apiRouter = Router();
 
@@ -1970,5 +1977,77 @@ apiRouter.post('/sync/import-all', authenticateToken, (req: AuthenticatedRequest
     ...result
   });
 });
+
+// --- Supabase Cloud Database Integration ---
+apiRouter.get('/supabase/status', authenticateToken, async (req: AuthenticatedRequest, res: Response) => {
+  const config = getSupabaseConfig();
+  return res.json(config);
+});
+
+apiRouter.get('/supabase/test', authenticateToken, async (req: AuthenticatedRequest, res: Response) => {
+  const result = await testSupabaseConnection();
+  return res.json(result);
+});
+
+apiRouter.post('/supabase/sync', authenticateToken, requireRoles(['SUPER_ADMIN']), async (req: AuthenticatedRequest, res: Response) => {
+  const user = req.user!;
+  const allData = db.getRawData();
+  const result = await syncAllToSupabase(allData);
+
+  if (result.success) {
+    db.logAudit(
+      user.id,
+      user.name,
+      'SUPABASE_SYNC',
+      'Database',
+      'all',
+      `Synchronized ${result.syncedCount} records to Supabase Project (${getSupabaseConfig().projectId})`
+    );
+    return res.json({
+      success: true,
+      message: `Successfully synchronized ${result.syncedCount} records to Supabase!`,
+      ...result
+    });
+  } else {
+    return res.status(500).json({
+      success: false,
+      message: result.error || 'Failed to sync data to Supabase',
+      ...result
+    });
+  }
+});
+
+apiRouter.post('/supabase/restore', authenticateToken, requireRoles(['SUPER_ADMIN']), async (req: AuthenticatedRequest, res: Response) => {
+  const user = req.user!;
+  const result = await restoreAllFromSupabase();
+
+  if (result.success && result.data) {
+    const importRes = db.importAllData(result.data);
+    db.logAudit(
+      user.id,
+      user.name,
+      'SUPABASE_RESTORE',
+      'Database',
+      'all',
+      `Restored ${importRes.importedCount} records from Supabase Project (${getSupabaseConfig().projectId})`
+    );
+    return res.json({
+      success: true,
+      message: `Successfully restored and merged ${importRes.importedCount} records from Supabase!`,
+      ...importRes
+    });
+  } else {
+    return res.status(404).json({
+      success: false,
+      error: result.error || 'No saved database snapshots found in Supabase'
+    });
+  }
+});
+
+apiRouter.get('/supabase/sql-schema', authenticateToken, (req: AuthenticatedRequest, res: Response) => {
+  const sql = getSupabaseSqlSchema();
+  return res.json({ sql, projectId: getSupabaseConfig().projectId });
+});
+
 
 

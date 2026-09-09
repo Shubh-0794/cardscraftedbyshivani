@@ -19,6 +19,7 @@ import {
   WishlistItem,
   UpiVerificationDetails
 } from '../src/types';
+import { syncAllToSupabase } from './supabase';
 
 const DATA_DIR = path.join(process.cwd(), 'data');
 const DB_FILE = path.join(DATA_DIR, 'db.json');
@@ -134,9 +135,21 @@ class DatabaseStore {
     }
   }
 
+  private syncTimeout: NodeJS.Timeout | null = null;
+
   private save() {
     try {
       fs.writeFileSync(DB_FILE, JSON.stringify(this.data, null, 2), 'utf-8');
+      
+      // Debounced background sync to Supabase (500ms delay to batch rapid sequential writes)
+      if (this.syncTimeout) {
+        clearTimeout(this.syncTimeout);
+      }
+      this.syncTimeout = setTimeout(() => {
+        syncAllToSupabase(this.data).catch(err => {
+          console.warn('Background Supabase sync notice:', err?.message || err);
+        });
+      }, 500);
     } catch (err) {
       console.error('Failed to write db.json', err);
     }

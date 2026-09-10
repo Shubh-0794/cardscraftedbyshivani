@@ -82,7 +82,7 @@ export async function testFirestoreConnection() {
     await getDocFromServer(doc(db, 'test', 'connection'));
   } catch (error) {
     // Non-blocking connection test - silent ignore in dev mode or unprovisioned collections
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       console.info('Firestore connection probe finished:', (error as Error)?.message || error);
     }
   }
